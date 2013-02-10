@@ -1,18 +1,5 @@
-
-*.prefs
-
 .classpath
 
 .project
 
-*.MF
-
-target/classes/META-INF/MANIFEST.MF
-
-target/classes/META-INF/MANIFEST.MF
-
-target/classes/META-INF/maven/it.uniroma2/client/pom.properties
-
-target/classes/META-INF/maven/it.uniroma2/client/pom.xml
-
-target/classes/it/uniroma2/HttpClient.class
+target/*
