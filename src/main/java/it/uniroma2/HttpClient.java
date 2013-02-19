@@ -5,6 +5,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
@@ -16,13 +18,9 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.MetricsRegistry;
 import com.yammer.metrics.core.Timer;
 import com.yammer.metrics.core.TimerContext;
-import com.yammer.metrics.httpclient.InstrumentedClientConnManager;
-import com.yammer.metrics.httpclient.InstrumentedHttpClient;
-import com.yammer.metrics.reporting.ConsoleReporter;
 import com.yammer.metrics.reporting.GraphiteReporter;
 
 public class HttpClient {
@@ -31,14 +29,13 @@ public class HttpClient {
 	private final String FILTER = "1";
 //	 private String urlString =
 //	 "http://0.0.0.0:8080/imagetranscoder/uploadServlet";
-	private String urlString = "http://testandriani-473276648.us-east-1.elb.amazonaws.com/imagetranscoder/uploadServlet";
+	private String urlString = "http://pasquale-109086018.us-east-1.elb.amazonaws.com/imagetranscoder/uploadServlet";
 
-	private String downloadFile = "/Users/pandriani/Desktop/giampaolo.png";
+	private String downloadFile = "downloaded.png";
 
 	public void upload(File uploadFile) {
 
 		DefaultHttpClient client = new DefaultHttpClient();
-//		InstrumentedHttpClient client = new InstrumentedHttpClient(mRegistry, new InstrumentedClientConnManager(), null);
 		HttpPost post = new HttpPost(urlString);
 		try {
 			MultipartEntity entity = new MultipartEntity();
@@ -69,21 +66,19 @@ public class HttpClient {
 
 	}
 
-	public static void main(String[] param) {
+	public static void main(String[] param) throws UnknownHostException {
 		HttpClient client = new HttpClient();	
-//		ConsoleReporter.enable(mRegistry, 1, TimeUnit.SECONDS);
 		// per graphite usare new e prefix
-//		GraphiteReporter.enable(mRegistry, 1, TimeUnit.SECONDS,
-//				"ec2-23-20-108-80.compute-1.amazonaws.com", 2003);
-//		final Timer timer = mRegistry.newTimer(HttpClient.class, "duration",
-//				TimeUnit.SECONDS, TimeUnit.SECONDS);
+		GraphiteReporter.enable(mRegistry, 1, TimeUnit.SECONDS, "ec2-23-23-51-229.compute-1.amazonaws.com", 2003, "Client-" + InetAddress.getLocalHost().getHostName());
+		final Timer timer = mRegistry.newTimer(HttpClient.class, "duration",
+				TimeUnit.SECONDS, TimeUnit.SECONDS);
 		WorkloadAnalisys workloadAnalisys = new WorkloadAnalisys();
 		File[] files = workloadAnalisys.list();
 
 		for (File f : files) {
-//			final TimerContext context = timer.time();
+			final TimerContext context = timer.time();
 			client.upload(f);
-//			context.stop();
+			context.stop();
 		}
 
 	}
