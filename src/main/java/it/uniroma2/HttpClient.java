@@ -29,7 +29,7 @@ public class HttpClient {
 	private final String FILTER = "1";
 //	 private String urlString =
 //	 "http://0.0.0.0:8080/imagetranscoder/uploadServlet";
-	private String urlString = "http://pasquale-109086018.us-east-1.elb.amazonaws.com/imagetranscoder/uploadServlet";
+	private String urlString = "http://pasquale-499086798.us-east-1.elb.amazonaws.com/imagetranscoder/uploadServlet";
 
 	private String downloadFile = "downloaded.png";
 
@@ -62,23 +62,6 @@ public class HttpClient {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-
-	}
-
-	public static void main(String[] param) throws UnknownHostException {
-		HttpClient client = new HttpClient();	
-		// per graphite usare new e prefix
-		GraphiteReporter.enable(mRegistry, 1, TimeUnit.SECONDS, "ec2-23-23-51-229.compute-1.amazonaws.com", 2003, "Client-" + InetAddress.getLocalHost().getHostName());
-		final Timer timer = mRegistry.newTimer(HttpClient.class, "duration",
-				TimeUnit.SECONDS, TimeUnit.SECONDS);
-		WorkloadAnalisys workloadAnalisys = new WorkloadAnalisys();
-		File[] files = workloadAnalisys.list();
-
-		for (File f : files) {
-			final TimerContext context = timer.time();
-			client.upload(f);
-			context.stop();
 		}
 
 	}
