@@ -5,10 +5,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -18,20 +16,12 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.yammer.metrics.core.MetricsRegistry;
-import com.yammer.metrics.core.Timer;
-import com.yammer.metrics.core.TimerContext;
-import com.yammer.metrics.reporting.GraphiteReporter;
-
 public class HttpClient {
 
-	private static final MetricsRegistry mRegistry = new MetricsRegistry();
 	private final String FILTER = "1";
-//	 private String urlString =
-//	 "http://0.0.0.0:8080/imagetranscoder/uploadServlet";
+	// private String urlString =
+	// "http://0.0.0.0:8080/imagetranscoder/uploadServlet";
 	private String urlString = "http://pasquale-499086798.us-east-1.elb.amazonaws.com/imagetranscoder/uploadServlet";
-
-	private String downloadFile = "downloaded.png";
 
 	public void upload(File uploadFile) {
 
@@ -46,8 +36,7 @@ public class HttpClient {
 			post.setEntity(entity);
 
 			HttpResponse response = client.execute(post);
-
-			File newf = new File(downloadFile);
+			File newf = new File(System.getenv("HOME")+"/"+ UUID.randomUUID().toString() + ".png");
 			BufferedInputStream br = new BufferedInputStream(response
 					.getEntity().getContent());
 			BufferedOutputStream bw = new BufferedOutputStream(
