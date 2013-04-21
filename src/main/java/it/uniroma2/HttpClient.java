@@ -21,7 +21,7 @@ public class HttpClient {
 	private final String FILTER = "1";
 	// private String urlString =
 	// "http://0.0.0.0:8080/imagetranscoder/uploadServlet";
-	private String urlString = "http://pasquale-499086798.us-east-1.elb.amazonaws.com/imagetranscoder/uploadServlet";
+	private String urlString = "http://pasquale-1648210264.us-east-1.elb.amazonaws.com/imagetranscoder/uploadServlet";
 
 	public void upload(File uploadFile) {
 
