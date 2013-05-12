@@ -4,3 +4,14 @@
 
 target/*
 /.settings
+
+.DS_Store
+
+*.class
+
+*.class
+
+target/classes/it/uniroma2/WorkloadAnalisys.class
+
+downloaded.png
+/target
