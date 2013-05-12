@@ -4,18 +4,34 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-public class WorkloadAnalisys {
+public class Workload {
 
 	private String homeDir;
+	private File[] list;
+	private int count = 0;
+	private Random r = new Random(1001); // fix this
 
-	public WorkloadAnalisys(String homeDir) {
+
+	public Workload(String homeDir) {
 		this.homeDir = homeDir;
+		preAnalysis(list());
+		this.list = list();
+	}
+	
+	public File pick(int index){
+		return list[index];
+	}
+	
+	public File randomPick(){
+		int index = r.nextInt(count);
+		return pick(index);
 	}
 
-	public File[] list() {
+	private File[] list() {
 		File homeDirFile = new File(homeDir);
 		return homeDirFile.listFiles(new FilenameFilter() {
 
@@ -25,13 +41,8 @@ public class WorkloadAnalisys {
 		});
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		WorkloadAnalisys workloadAnalisys = new WorkloadAnalisys("XX");
-		File[] fileList = workloadAnalisys.list();
-		double count = 0;
+	private void preAnalysis(File[] fileList) {
+		//double count = 0;
 		double totalSize = 0;
 		for (File file : fileList) {
 			// Delete not jpg
@@ -55,6 +66,18 @@ public class WorkloadAnalisys {
 		}
 		System.out.println("Count: " + count);
 		System.out.println("Avg Size: " + totalSize / count);
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Workload workload = new Workload("/Users/pandriani/Desktop/imgs");
+		
+		for(int i = 0; i< 20; i++){
+			System.out.println(workload.randomPick().getName());
+		}
+		
 
 	}
 

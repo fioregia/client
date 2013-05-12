@@ -19,9 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class HttpClient {
 
 	private final String FILTER = "1";
-	// private String urlString =
-	// "http://0.0.0.0:8080/imagetranscoder/uploadServlet";
-	private String urlString = "http://pasquale-1648210264.us-east-1.elb.amazonaws.com/imagetranscoder/uploadServlet";
+	private String urlString = "http://192.168.3.41/imagetranscoder/uploadServlet";
 
 	public void upload(File uploadFile) {
 
@@ -46,7 +44,8 @@ public class HttpClient {
 				bw.write(r);
 			bw.close();
 			br.close();
-
+			newf.delete();
+			
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
